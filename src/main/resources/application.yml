@@ -1,0 +1,6 @@
+
+
+application:
+  spark-conf:
+    spark:
+      master: local[*]
