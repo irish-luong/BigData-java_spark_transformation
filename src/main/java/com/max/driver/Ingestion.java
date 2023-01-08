@@ -32,4 +32,22 @@ public final class Ingestion {
 
         masterSale.show();
     }
+
+    @CommandLine.Command(name = "books")
+    public void ingestBookData(
+            @CommandLine.Option(names = "--file-name", required = true) String fileName
+    ) {
+        Dataset<Row> bookDF = saleIngestionService.loadBooks(fileName);
+
+        bookDF.show();
+    }
+
+    @CommandLine.Command(name = "subjects")
+    public void ingestSubjectData(
+            @CommandLine.Option(names = "--file-name", required = true) String fileName
+    ) {
+        Dataset<Row> subjectDF = saleIngestionService.loadSubjects(fileName);
+
+        subjectDF.show();
+    }
 }
