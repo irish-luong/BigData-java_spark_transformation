@@ -1,6 +1,8 @@
 package com.max.driver;
 
 
+import com.max.model.Car;
+import com.max.service.CarIngestionService;
 import com.max.service.SaleIngestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,11 @@ import picocli.CommandLine;
 @CommandLine.Command(name = "data-ingest")
 public final class Ingestion {
 
+    private static final String FILE_NAME = "--file-name";
+
     private final SaleIngestionService saleIngestionService;
+
+    private final CarIngestionService carIngestionService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -26,7 +32,7 @@ public final class Ingestion {
     @CommandLine.Command(name = "master-sale")
 
     public void ingestMasterSaleData(
-            @CommandLine.Option(names = "--file-name", required = true) String fileName
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
     ) {
         Dataset<Row> masterSale = saleIngestionService.loadCleanMasterSaleData(fileName);
 
@@ -35,7 +41,7 @@ public final class Ingestion {
 
     @CommandLine.Command(name = "books")
     public void ingestBookData(
-            @CommandLine.Option(names = "--file-name", required = true) String fileName
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
     ) {
         Dataset<Row> bookDF = saleIngestionService.loadBooks(fileName);
 
@@ -44,10 +50,20 @@ public final class Ingestion {
 
     @CommandLine.Command(name = "subjects")
     public void ingestSubjectData(
-            @CommandLine.Option(names = "--file-name", required = true) String fileName
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
     ) {
         Dataset<Row> subjectDF = saleIngestionService.loadSubjects(fileName);
 
         subjectDF.show();
+    }
+
+    @CommandLine.Command(name = "cars")
+    public void ingestCarData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Car> carDF = carIngestionService.loadData(fileName);
+        carDF.show();
+
     }
 }
