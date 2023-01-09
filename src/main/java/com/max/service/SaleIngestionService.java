@@ -1,20 +1,17 @@
 package com.max.service;
 
 import com.max.repository.impl.MasterSaleReadRepository;
-import lombok.RequiredArgsConstructor;
-import org.apache.spark.sql.Column;
-import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.Dataset;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+import java.util.stream.Collectors;
 import static org.apache.spark.sql.functions.lit;
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.concat;
-
 
 
 /**

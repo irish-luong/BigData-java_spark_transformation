@@ -28,5 +28,5 @@ public interface DatasetReadRepository<T> {
      */
     Dataset<T> loadByLocation(String path);
 
-    Dataset<Row> loadByLocation(String path, Map<String, String> options);
+    Dataset<T> loadByLocation(String path, Map<String, String> options);
 }
