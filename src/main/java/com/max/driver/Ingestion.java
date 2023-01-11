@@ -2,7 +2,9 @@ package com.max.driver;
 
 
 import com.max.model.Car;
+import com.max.model.Food;
 import com.max.service.CarIngestionService;
+import com.max.service.FoodIngestionService;
 import com.max.service.SaleIngestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,8 @@ public final class Ingestion {
     private final SaleIngestionService saleIngestionService;
 
     private final CarIngestionService carIngestionService;
+
+    private final FoodIngestionService foodIngestionService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -65,5 +69,14 @@ public final class Ingestion {
         Dataset<Car> carDF = carIngestionService.loadData(fileName);
         carDF.show();
 
+    }
+
+    @CommandLine.Command(name = "generic-foods")
+    public void ingestGenericFoodData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> foodDF = foodIngestionService.loadData(fileName);
+        foodDF.show();
     }
 }

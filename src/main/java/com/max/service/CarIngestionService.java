@@ -3,6 +3,7 @@ package com.max.service;
 import com.max.model.Car;
 import com.max.repository.impl.CarReadRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
@@ -20,6 +21,7 @@ import static org.apache.spark.sql.functions.*;
 /**
  * Load - clean - transform Spark dataframe
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class CarIngestionService {
