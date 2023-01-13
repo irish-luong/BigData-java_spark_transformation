@@ -3,10 +3,7 @@ package com.max.driver;
 
 import com.max.model.Car;
 import com.max.model.Food;
-import com.max.service.CarIngestionService;
-import com.max.service.FoodIngestionService;
-import com.max.service.SaleIngestionService;
-import com.max.service.StudentSubjectsService;
+import com.max.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
@@ -16,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
+
+import static org.apache.spark.sql.functions.*;
+
 
 @Slf4j
 @Component
@@ -32,6 +32,8 @@ public final class Ingestion {
     private final FoodIngestionService foodIngestionService;
 
     private final StudentSubjectsService studentSubjectsService;
+
+    private final FarmService farmService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -90,5 +92,35 @@ public final class Ingestion {
 
         Dataset<Row> studentSubjectsDF = studentSubjectsService.loadData(fileName);
         studentSubjectsDF.show();
+    }
+
+    @CommandLine.Command(name = "farm-data")
+    public void ingestFarmData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> farmDF = farmService.loadData(fileName);
+        farmDF.show();
+
+        farmDF.printSchema();
+
+        Row aggData = farmService.reduceDF(farmDF);
+
+        log.info("Total Calculated Sales " + aggData.prettyJson());
+
+        Dataset<Row> maxSalesDf = farmDF.agg(max(col("total_sales")));
+        maxSalesDf.show();
+
+        /** MIN */
+
+        Dataset<Row> minSalesDf = farmDF.agg(min(col("total_sales")));
+        minSalesDf.show();
+
+        /** MIN */
+
+        Dataset<Row> meanSalesDf = farmDF.agg(mean(col("total_sales")));
+        meanSalesDf.show();
+
+
     }
 }
