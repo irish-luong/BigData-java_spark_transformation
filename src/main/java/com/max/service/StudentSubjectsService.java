@@ -72,7 +72,7 @@ public final class StudentSubjectsService {
 
         private Object[] mapAndFlattenArrayValue(Row row) {
 
-            WrappedArray arrayColumns = row.getAs("Grades");
+            WrappedArray<Object> arrayColumns = row.getAs("Grades");
 
             int finalRowSize = arrayColumns.length() + 1;
             int rowIndex = 0;
