@@ -6,6 +6,7 @@ import com.max.model.Food;
 import com.max.service.CarIngestionService;
 import com.max.service.FoodIngestionService;
 import com.max.service.SaleIngestionService;
+import com.max.service.StudentSubjectsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
@@ -29,6 +30,8 @@ public final class Ingestion {
     private final CarIngestionService carIngestionService;
 
     private final FoodIngestionService foodIngestionService;
+
+    private final StudentSubjectsService studentSubjectsService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -78,5 +81,14 @@ public final class Ingestion {
 
         Dataset<Row> foodDF = foodIngestionService.loadData(fileName);
         foodDF.show();
+    }
+
+    @CommandLine.Command(name = "student-subjects")
+    public void ingestStudentSubjectData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> studentSubjectsDF = studentSubjectsService.loadData(fileName);
+        studentSubjectsDF.show();
     }
 }
