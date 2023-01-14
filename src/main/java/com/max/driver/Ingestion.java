@@ -35,6 +35,8 @@ public final class Ingestion {
 
     private final FarmService farmService;
 
+    private final AirlineService airlineService;
+
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
 
@@ -121,6 +123,26 @@ public final class Ingestion {
         Dataset<Row> meanSalesDf = farmDF.agg(mean(col("total_sales")));
         meanSalesDf.show();
 
+        // Show partition information
+        farmService.showPartitionInfo(farmDF);
+    }
+
+    @CommandLine.Command(name = "airline")
+    public void ingestAirlineData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> airlineDF = airlineService.loadData(fileName);
+        airlineDF.show();
+
+        log.info("[AIRLINE] Group by Code and Month");
+        Dataset<Row> airlineDF1 = airlineService.summarizeByCodeAndMonth(airlineDF);
+        airlineDF1.show();
+
+
+        log.info("[AIRLINE] Group by key");
+        Dataset<Row> airlineDF2 = airlineService.summarizeByKey(airlineDF);
+        airlineDF2.show();
 
     }
 }

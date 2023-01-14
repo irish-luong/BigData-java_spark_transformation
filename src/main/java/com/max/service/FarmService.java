@@ -2,6 +2,8 @@ package com.max.service;
 
 import com.max.repository.impl.CSVReadRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.spark.api.java.function.ForeachPartitionFunction;
 import org.apache.spark.api.java.function.ReduceFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -17,7 +19,7 @@ import java.util.stream.Stream;
 
 import static org.apache.spark.sql.functions.col;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class FarmService {
@@ -65,5 +67,30 @@ public final class FarmService {
 
             return new GenericRowWithSchema(newRow, t1.schema());
         }
+    }
+
+    public void showPartitionInfo(Dataset<Row> df) {
+
+        // Show partitions
+        log.info(String.format("[BEFORE] Number of partitions: %d", df.javaRDD().getNumPartitions()));
+
+        Dataset<Row> distDF = df.repartition(5);
+
+        log.info(String.format("[AFTER] Number of partitions: %d", distDF.javaRDD().getNumPartitions()));
+
+        ForeachPartitionFunction<Row> ref = (rowIterator) -> {
+            log.info("PARTITION CONTENT");
+            while(rowIterator.hasNext()){
+                log.info(String.format("ROW VALUE: %s", rowIterator.next().toString()));
+            }
+        };
+
+        distDF.foreachPartition(ref);
+
+        // Sort
+        Dataset<Row> sortedDF = distDF.sort("total_sales").repartition(5);
+
+        sortedDF.foreachPartition(ref);
+
     }
 }
