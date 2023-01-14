@@ -37,6 +37,8 @@ public final class Ingestion {
 
     private final AirlineService airlineService;
 
+    private final CovidService covidService;
+
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
 
@@ -143,6 +145,16 @@ public final class Ingestion {
         log.info("[AIRLINE] Group by key");
         Dataset<Row> airlineDF2 = airlineService.summarizeByKey(airlineDF);
         airlineDF2.show();
+
+    }
+
+    @CommandLine.Command(name = "covid-19")
+    public void ingestCovidData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> covidDF = covidService.loadData(fileName);
+        covidDF.show();
 
     }
 }
