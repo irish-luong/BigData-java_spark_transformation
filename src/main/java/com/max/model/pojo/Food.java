@@ -1,4 +1,4 @@
-package com.max.model;
+package com.max.model.pojo;
 
 
 import lombok.Data;

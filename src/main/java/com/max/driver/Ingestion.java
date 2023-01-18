@@ -1,8 +1,7 @@
 package com.max.driver;
 
 
-import com.max.model.Car;
-import com.max.model.Food;
+import com.max.model.pojo.Car;
 import com.max.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +37,8 @@ public final class Ingestion {
     private final AirlineService airlineService;
 
     private final CovidService covidService;
+
+    private final NetworkService networkService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -155,6 +156,16 @@ public final class Ingestion {
 
         Dataset<Row> covidDF = covidService.loadData(fileName);
         covidDF.show();
+
+    }
+
+    @CommandLine.Command(name = "network-transit")
+    public void ingestNetworkTransitData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName
+    ) {
+
+        Dataset<Row> networkTransitDF = networkService.loadData(fileName);
+        networkTransitDF.show();
 
     }
 }

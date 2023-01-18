@@ -11,7 +11,6 @@ import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.max.model.Food;
 import com.max.repository.impl.FoodReadRepository;
 
 import java.util.Map;

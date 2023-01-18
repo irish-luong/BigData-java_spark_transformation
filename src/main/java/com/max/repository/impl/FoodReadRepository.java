@@ -1,7 +1,6 @@
 package com.max.repository.impl;
 
 
-import com.max.model.Food;
 import com.max.repository.DatasetReadRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.spark.sql.Dataset;

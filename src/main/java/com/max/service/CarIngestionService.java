@@ -1,6 +1,6 @@
 package com.max.service;
 
-import com.max.model.Car;
+import com.max.model.pojo.Car;
 import com.max.repository.impl.CarReadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.apache.spark.sql.functions.*;
 
 
 /**
