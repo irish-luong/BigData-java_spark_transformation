@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 
 import static org.apache.spark.sql.functions.*;
+import static com.max.driver.CliArgs.*;
 
 
 @Slf4j
@@ -22,7 +23,9 @@ import static org.apache.spark.sql.functions.*;
 @CommandLine.Command(name = "data-ingest")
 public final class Ingestion {
 
-    private static final String FILE_NAME = "--file-name";
+//    private static final String FILE_NAME = "--file-name";
+
+
 
     private final SaleIngestionService saleIngestionService;
 
@@ -39,6 +42,8 @@ public final class Ingestion {
     private final CovidService covidService;
 
     private final NetworkService networkService;
+
+    private final ComplexFileIngestionService complexFileIngestionService;
 
 
     Logger LOGGER = LoggerFactory.getLogger(Ingestion.class);
@@ -167,5 +172,36 @@ public final class Ingestion {
         Dataset<Row> networkTransitDF = networkService.loadData(fileName);
         networkTransitDF.show();
 
+    }
+
+    @CommandLine.Command(name = "complex-file")
+    public void ingestComplexFileData(
+            @CommandLine.Option(names = FILE_NAME, required = true) String fileName,
+            @CommandLine.Option(names = FORMAT, required = true, description = "csv, json, ..etc") String format
+    ) {
+
+        Dataset<Row> df = null;
+
+        switch (format.toLowerCase()) {
+            case "csv":
+                df = complexFileIngestionService.loadComplexCsv(fileName);
+                break;
+            case "json":
+                df = complexFileIngestionService.loadJsonLine(fileName);
+                break;
+            case "txt":
+                df = complexFileIngestionService.loadText(fileName);
+                break;
+            case "xml":
+                df = complexFileIngestionService.loadXML(fileName);
+                break;
+        }
+
+        if (df != null) {
+            df.printSchema();
+            df.show();
+        }
+
+        log.info("===== END ======");
     }
 }

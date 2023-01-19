@@ -1,13 +1,10 @@
 package com.max.service;
 
-import com.max.repository.impl.CSVReadRepository;
+import com.max.repository.impl.FileReadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.spark.api.java.function.ForeachPartitionFunction;
 import org.apache.spark.api.java.function.MapFunction;
 import org.apache.spark.api.java.function.MapGroupsFunction;
-import org.apache.spark.api.java.function.ReduceFunction;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.KeyValueGroupedDataset;
@@ -21,7 +18,6 @@ import org.apache.spark.sql.types.StructType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -55,7 +51,7 @@ public final class AirlineService {
             {12, "Dec"}
     }).collect(Collectors.toMap(x -> (Integer) x[0], x -> (String) x[1]));
 
-    private final CSVReadRepository csvReadRepository;
+    private final FileReadRepository fileReadRepository;
 
     public Dataset<Row> loadData(String path) {
 
@@ -67,7 +63,7 @@ public final class AirlineService {
                 .collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
 
-        return csvReadRepository.loadByLocation(path, options);
+        return fileReadRepository.loadByLocation(path, options);
     }
 
     public Dataset<Row> summarizeByCodeAndMonth(Dataset<Row> df) {

@@ -1,6 +1,6 @@
 package com.max.service;
 
-import com.max.repository.impl.CSVReadRepository;
+import com.max.repository.impl.FileReadRepository;
 import com.max.udfs.Udfs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static org.apache.spark.sql.functions.lit;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class CovidService {
 
-    private final CSVReadRepository csvReadRepository;
+    private final FileReadRepository fileReadRepository;
 
     public Dataset<Row> loadData(String path) {
 
@@ -33,7 +33,7 @@ public final class CovidService {
                 .collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
 
-        return csvReadRepository.loadByLocation(path, options)
+        return fileReadRepository.loadByLocation(path, options)
                 .transform(this::transformation);
     }
 

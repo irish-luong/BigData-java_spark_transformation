@@ -40,6 +40,11 @@ public class MasterSaleReadRepository implements DatasetReadRepository<Row> {
         return loadByCSV(path, options);
     }
 
+    @Override
+    public Dataset<Row> loadByLocation(String path, Map<String, String> options, String format) {
+        return null;
+    }
+
     private Dataset<Row> loadByCSV(String path, Map<String, String> options)  {
         return spark
                 .read()

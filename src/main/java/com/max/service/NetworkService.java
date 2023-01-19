@@ -1,10 +1,9 @@
 package com.max.service;
 
 import com.max.mapper.TransmitterCompanyMapper;
-import com.max.mapper.TransmitterMapperBase;
 import com.max.mapper.TransmitterSpeedMapper;
 import com.max.model.dto.PingAnomaly;
-import com.max.repository.impl.CSVReadRepository;
+import com.max.repository.impl.FileReadRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class NetworkService {
 
-    private final CSVReadRepository csvReadRepository;
+    private final FileReadRepository fileReadRepository;
 
     public Dataset<Row> loadData(String path) {
 
@@ -46,7 +45,7 @@ public final class NetworkService {
 
 
         TransmitterSpeedMapper transmitterSpeedMapper = new TransmitterSpeedMapper();
-        Dataset<Row> df = csvReadRepository.loadByLocation(path, options);
+        Dataset<Row> df = fileReadRepository.loadByLocation(path, options);
 
         Dataset<Row> result = df.map(transmitterSpeedMapper, RowEncoder.apply(transmitterSpeedMapper.structType()));
 

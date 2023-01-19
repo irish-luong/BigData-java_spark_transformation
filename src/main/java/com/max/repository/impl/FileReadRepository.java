@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class CSVReadRepository implements DatasetReadRepository<Row> {
+public class FileReadRepository implements DatasetReadRepository<Row> {
 
     private final SparkSession spark;
 
@@ -38,5 +38,10 @@ public class CSVReadRepository implements DatasetReadRepository<Row> {
     @Override
     public Dataset<Row> loadByLocation(String path, Map<String, String> options) {
         return spark.read().format("csv").options(options).load(path);
+    }
+
+    @Override
+    public Dataset<Row> loadByLocation(String path, Map<String, String> options, String format) {
+        return spark.read().format(format).options(options).load(path);
     }
 }

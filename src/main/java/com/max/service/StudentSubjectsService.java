@@ -1,6 +1,6 @@
 package com.max.service;
 
-import com.max.repository.impl.CSVReadRepository;
+import com.max.repository.impl.FileReadRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.spark.sql.Dataset;
@@ -28,7 +28,7 @@ import static org.apache.spark.sql.functions.split;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class StudentSubjectsService {
 
-    private final CSVReadRepository csvReadRepository;
+    private final FileReadRepository fileReadRepository;
 
     private static final StructType STUDENT_PLATEN_SCHEMA = new StructType()
             .add("Name", DataTypes.StringType)
@@ -48,7 +48,7 @@ public final class StudentSubjectsService {
                 .collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
 
-        return csvReadRepository
+        return fileReadRepository
                 .loadByLocation(path, options)
                 .transform(this::splitGrade)
                 .flatMap(new SplitGrade(), RowEncoder.apply(STUDENT_PLATEN_SCHEMA))

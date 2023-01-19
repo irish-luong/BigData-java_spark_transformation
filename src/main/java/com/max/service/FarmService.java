@@ -1,6 +1,6 @@
 package com.max.service;
 
-import com.max.repository.impl.CSVReadRepository;
+import com.max.repository.impl.FileReadRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.api.java.function.ForeachPartitionFunction;
@@ -9,7 +9,6 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema;
 import org.apache.spark.sql.types.DataTypes;
-import org.apache.spark.sql.types.StructType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ import static org.apache.spark.sql.functions.col;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class FarmService {
 
-    private final CSVReadRepository csvReadRepository;
+    private final FileReadRepository fileReadRepository;
 
     public Dataset<Row> loadData(String path) {
 
@@ -35,7 +34,7 @@ public final class FarmService {
                 .collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
 
-        return csvReadRepository.loadByLocation(path, options)
+        return fileReadRepository.loadByLocation(path, options)
                 .drop("farm_stand","month","year","days","visitors")
                 .select(
                         col("total_sales").cast(DataTypes.DoubleType),

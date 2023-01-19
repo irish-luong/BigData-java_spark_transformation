@@ -92,6 +92,15 @@
 ---
 ## Spark SQL and other functionalities <a name="ssaof"></a>
 
+### 1. Ingest files
+    1. CSV
+    2. Jsonline
+    3. Json
+    4. Text
+    5. XML
+    6. Parquet
+    7. Delta table (upgraded parquet)
+
 ---
 ## Big data batching application <a name="bdba"></a>
 

@@ -41,4 +41,9 @@ public class FoodReadRepository implements DatasetReadRepository<Row> {
     public Dataset<Row> loadByLocation(String path, Map<String, String> options) {
         return spark.read().format("csv").options(options).load(path);
     }
+
+    @Override
+    public Dataset<Row> loadByLocation(String path, Map<String, String> options, String format) {
+        return null;
+    }
 }
