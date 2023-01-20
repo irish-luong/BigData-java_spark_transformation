@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 
+import java.sql.SQLException;
+
 import static org.apache.spark.sql.functions.*;
 import static com.max.driver.CliArgs.*;
 
@@ -98,10 +100,12 @@ public final class Ingestion {
     @CommandLine.Command(name = "student-subjects")
     public void ingestStudentSubjectData(
             @CommandLine.Option(names = FILE_NAME, required = true) String fileName
-    ) {
+    ) throws SQLException {
 
         Dataset<Row> studentSubjectsDF = studentSubjectsService.loadData(fileName);
         studentSubjectsDF.show();
+
+        studentSubjectsService.writeData(studentSubjectsDF);
     }
 
     @CommandLine.Command(name = "farm-data")

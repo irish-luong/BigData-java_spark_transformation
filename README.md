@@ -99,7 +99,10 @@
     4. Text
     5. XML
     6. Parquet
-    7. Delta table (upgraded parquet)
+
+
+### 2. Ingest databases
+    1. Delta table (upgraded parquet)
 
 ---
 ## Big data batching application <a name="bdba"></a>

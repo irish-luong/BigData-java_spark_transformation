@@ -1,6 +1,7 @@
 package com.max.config;
 
 import com.max.config.properties.ApplicationProperties;
+import com.max.config.properties.DerbyProperties;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +22,6 @@ import java.util.Optional;
         includeFilters = @ComponentScan.Filter(CommandLine.Command.class)
 )
 public class ApplicationConfig {
-
 
     /**
      *

@@ -4,3 +4,7 @@ application:
   spark-conf:
     spark:
       master: local[*]
+  derby:
+    user: app
+    password: derby
+    url: jdbc:derby:firstdb;create=true;user=app;password=derby

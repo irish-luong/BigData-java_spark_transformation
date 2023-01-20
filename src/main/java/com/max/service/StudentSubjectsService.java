@@ -2,8 +2,10 @@ package com.max.service;
 
 import com.max.repository.impl.FileReadRepository;
 
+import com.max.repository.impl.StudentDatasetRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.catalyst.encoders.RowEncoder;
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.spark.sql.types.DataTypes;
 import scala.collection.mutable.WrappedArray;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,16 +31,16 @@ import static org.apache.spark.sql.functions.split;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public final class StudentSubjectsService {
 
+    private final StudentDatasetRepository studentDatasetRepository;
     private final FileReadRepository fileReadRepository;
 
     private static final StructType STUDENT_PLATEN_SCHEMA = new StructType()
-            .add("Name", DataTypes.StringType)
-            .add("Grade 1", DataTypes.StringType)
-            .add("Grade 2", DataTypes.StringType)
-            .add("Grade 3", DataTypes.StringType)
-            .add("Grade 4", DataTypes.StringType)
-            .add("Grade 5", DataTypes.StringType)
-            .add("Grade 5", DataTypes.StringType);
+            .add("name", DataTypes.StringType)
+            .add("grade_1", DataTypes.StringType)
+            .add("grade_2", DataTypes.StringType)
+            .add("grade_3", DataTypes.StringType)
+            .add("grade_4", DataTypes.StringType)
+            .add("grade_5", DataTypes.StringType);
 
     public Dataset<Row> loadData(String path) {
 
@@ -95,5 +98,20 @@ public final class StudentSubjectsService {
 
             return finalRow;
         }
+    }
+
+    public void writeData(Dataset<Row> df) throws SQLException {
+
+        studentDatasetRepository.startSession();
+
+        studentDatasetRepository.safeCreateTable();
+
+        List<String> names = df.select("name")
+                .as(Encoders.STRING())
+                .collectAsList();
+
+        studentDatasetRepository.queryByNames(names).show();
+
+        studentDatasetRepository.upsertStudent(df);
     }
 }
