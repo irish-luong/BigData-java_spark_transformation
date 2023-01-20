@@ -107,6 +107,19 @@
 ---
 ## Big data batching application <a name="bdba"></a>
 
+
+### 1. The application architecture ecosystem
+
+#### Management and scheduling tier
+#### Workflow tier
+#### Logging and monitoring tier
+#### Processing tier
+#### Storage tier
+#### Database tier
+
+### 2. Cloud architecture - AWS
+
+
 ---
 ## Deploy and cluster execution <a name="dace"></a>
 
