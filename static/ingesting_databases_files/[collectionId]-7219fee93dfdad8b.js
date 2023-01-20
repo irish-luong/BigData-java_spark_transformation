@@ -1,2 +1,0 @@
-(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[44895],{54295:function(a,b,c){(window.__NEXT_P=window.__NEXT_P||[]).push(["/module/[encodedPathInfo]/[authorId]/[collectionId]",function(){return c(24813)}])}},function(a){a.O(0,[9566,7684,49774,964,50434,39158,69529,83318,74211,8981,30574,68355,51701,76836,40262,65378,31835,1143,27636,95580,49685,40259,35401,15178,66196,65048,169,4004,92888,40179],function(){var b;return a(a.s=54295)}),_N_E=a.O()}])
-//# sourceMappingURL=[collectionId]-7219fee93dfdad8b.js.map
